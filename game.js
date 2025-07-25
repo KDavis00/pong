@@ -150,7 +150,14 @@ function endGame(winner) {
     running = false;
     cancelAnimationFrame(animationFrameId);
     animationFrameId = null;
-    alert(winner + " wins the game!");  // Simple alert for now
+    alert(winner + " wins the game!");
+    player.score = 0;
+    ai.score = 0;
+    resetBall();
+    render();
+    document.getElementById("startBtn").textContent = "Start Game";
+}
+
 
     // Optionally reset scores or reload the game
     // player.score = 0;
