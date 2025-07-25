@@ -227,19 +227,20 @@ function gameLoop() {
 
 document.getElementById("startBtn").addEventListener("click", function () {
     running = !running;
-    this.textContent = running ? "Pause Game" : "Resume Game";
 
+    // Set button text based on new running state
     if (running) {
-        // Only start loop if it's not already running
+        this.textContent = "Pause Game";
         if (!animationFrameId) {
-            gameLoop();
+            gameLoop();  // start loop
         }
     } else {
-        // Stop the animation frame when paused
+        this.textContent = "Resume Game";
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
     }
 });
+
 
 
 // --- Change Paddle Color ---
