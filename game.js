@@ -130,21 +130,49 @@ function update() {
 
     // Left and right wall scoring
     if (ball.x <= 0) {
-    ai.score++;
-    if (ai.score >= 5) {
-        endGame("AI");
-        return;  // stop further update this frame
+        ai.score++;
+        if (ai.score >= 5) {
+            endGame("AI");
+            return;  // stop further update this frame
+        }
+        resetBall();
     }
-    resetBall();
-}
-if (ball.x + ball.size >= canvas.width) {
-    player.score++;
-    if (player.score >= 5) {
-        endGame("Player");
-        return;  // stop further update this frame
+    if (ball.x + ball.size >= canvas.width) {
+        player.score++;
+        if (player.score >= 5) {
+            endGame("Player");
+            return;  // stop further update this frame
+        }
+        resetBall();
     }
-    resetBall();
+
+    // --- AI paddle movement with error margin ---
+    let aiCenter = ai.y + ai.height / 2;
+    let ballCenter = ball.y + ball.size / 2;
+
+    // Add AI reaction delay and inaccuracy
+    let difficulty = 0.15; // lower = dumber
+    let error = (Math.random() - 0.5) * 60; // random offset: -30 to +30
+    // Only move AI when ball is coming toward it
+    if (ball.velocityX > 0) {
+        if (aiCenter < ballCenter + error - 10) {
+            ai.y += 4 * (1 - difficulty); // slower speed
+        } else if (aiCenter > ballCenter + error + 10) {
+            ai.y -= 4 * (1 - difficulty);
+        }
+    } else {
+        // Ball is going away – return to center slowly
+        if (aiCenter < canvas.height/2 - 10) {
+            ai.y += 2;
+        } else if (aiCenter > canvas.height/2 + 10) {
+            ai.y -= 2;
+        }
+    }
+
+    // Clamp within canvas
+    ai.y = Math.max(0, Math.min(canvas.height - ai.height, ai.y));
 }
+
 
 function endGame(winner) {
     running = false;
