@@ -150,16 +150,22 @@ function endGame(winner) {
     running = false;
     cancelAnimationFrame(animationFrameId);
     animationFrameId = null;
-    alert(winner + " wins the game!");  // Simple alert for now
+    alert(winner + " wins the game!");
 
-    // Optionally reset scores or reload the game
-    // player.score = 0;
-    // ai.score = 0;
-    // resetBall();
-    // render();
-     // Reset start button text
+    // Reset scores
+    player.score = 0;
+    ai.score = 0;
+
+    // Reset ball to center
+    resetBall();
+
+    // Reset start button text
     startBtn.textContent = "Start Game";
+
+    // Render updated scores and ball
+    render();
 }
+
 
     // --- AI paddle movement with error margin ---
 let aiCenter = ai.y + ai.height / 2;
