@@ -157,6 +157,8 @@ function endGame(winner) {
     // ai.score = 0;
     // resetBall();
     // render();
+     // Reset start button text
+    startBtn.textContent = "Start Game";
 }
 
     // --- AI paddle movement with error margin ---
