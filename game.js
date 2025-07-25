@@ -205,12 +205,7 @@ function render() {
     drawScore(3*canvas.width/4, 40, ai.score);
 }
 
-// Main game loop
-function gameLoop() {
-    update();
-    render();
-    requestAnimationFrame(gameLoop);
-}
+
 
 // --- /Pause Toggle ---
 
