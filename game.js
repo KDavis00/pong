@@ -159,12 +159,7 @@ function endGame(winner) {
 }
 
 
-    // Optionally reset scores or reload the game
-    // player.score = 0;
-    // ai.score = 0;
-    // resetBall();
-    // render();
-}
+
 
     // --- AI paddle movement with error margin ---
 let aiCenter = ai.y + ai.height / 2;
