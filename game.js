@@ -146,35 +146,32 @@ function update() {
         resetBall();
     }
 
-  // --- AI paddle movement with error margin ---
-let aiCenter = ai.y + ai.height / 2;
-let ballCenter = ball.y + ball.size / 2;
+    // --- AI paddle movement with error margin ---
+    let aiCenter = ai.y + ai.height / 2;
+    let ballCenter = ball.y + ball.size / 2;
 
-// Add AI reaction delay and inaccuracy
-let difficulty = 0.15; // lower = dumber
-let error = (Math.random() - 0.5) * 60; // random offset: -30 to +30
-// Only move AI when ball is coming toward it
-if (ball.velocityX > 0) {
-    if (aiCenter < ballCenter + error - 10) {
-        ai.y += 4 * (1 - difficulty); // slower speed
-    } else if (aiCenter > ballCenter + error + 10) {
-        ai.y -= 4 * (1 - difficulty);
+    // Add AI reaction delay and inaccuracy
+    let difficulty = 0.15; // lower = dumber
+    let error = (Math.random() - 0.5) * 60; // random offset: -30 to +30
+    // Only move AI when ball is coming toward it
+    if (ball.velocityX > 0) {
+        if (aiCenter < ballCenter + error - 10) {
+            ai.y += 4 * (1 - difficulty); // slower speed
+        } else if (aiCenter > ballCenter + error + 10) {
+            ai.y -= 4 * (1 - difficulty);
+        }
+    } else {
+        // Ball is going away – return to center slowly
+        if (aiCenter < canvas.height/2 - 10) {
+            ai.y += 2;
+        } else if (aiCenter > canvas.height/2 + 10) {
+            ai.y -= 2;
+        }
     }
-} else {
-    // Ball is going away – return to center slowly
-    if (aiCenter < canvas.height/2 - 10) {
-        ai.y += 2;
-    } else if (aiCenter > canvas.height/2 + 10) {
-        ai.y -= 2;
-    }
+
+    // Clamp within canvas
+    ai.y = Math.max(0, Math.min(canvas.height - ai.height, ai.y));
 }
-
-// Clamp within canvas
-ai.y = Math.max(0, Math.min(canvas.height - ai.height, ai.y));
-
-
-
-
 
 function endGame(winner) {
     running = false;
@@ -187,38 +184,6 @@ function endGame(winner) {
     render();
     document.getElementById("startBtn").textContent = "Start Game";
 }
-
-
-
-
-    // --- AI paddle movement with error margin ---
-let aiCenter = ai.y + ai.height / 2;
-let ballCenter = ball.y + ball.size / 2;
-
-// Add AI reaction delay and inaccuracy
-let difficulty = 0.15; // lower = dumber
-let error = (Math.random() - 0.5) * 60; // random offset: -30 to +30
-// Only move AI when ball is coming toward it
-if (ball.velocityX > 0) {
-    if (aiCenter < ballCenter + error - 10) {
-        ai.y += 4 * (1 - difficulty); // slower speed
-    } else if (aiCenter > ballCenter + error + 10) {
-        ai.y -= 4 * (1 - difficulty);
-    }
-} else {
-    // Ball is going away – return to center slowly
-    if (aiCenter < canvas.height/2 - 10) {
-        ai.y += 2;
-    } else if (aiCenter > canvas.height/2 + 10) {
-        ai.y -= 2;
-    }
-}
-
-// Clamp within canvas
-ai.y = Math.max(0, Math.min(canvas.height - ai.height, ai.y));
-
-}
-
 
 // Render everything
 function render() {
@@ -237,10 +202,7 @@ function render() {
     drawScore(3*canvas.width/4, 40, ai.score);
 }
 
-
-
 // --- Start/Pause Toggle ---
-
 let running = false;
 let animationFrameId = null;
 
@@ -255,7 +217,6 @@ function gameLoop() {
 document.getElementById("startBtn").addEventListener("click", function () {
     running = !running;
 
-    // Set button text based on new running state
     if (running) {
         this.textContent = "Pause Game";
         if (!animationFrameId) {
@@ -266,11 +227,9 @@ document.getElementById("startBtn").addEventListener("click", function () {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
     }
-    
 });
+
 document.getElementById("startBtn").textContent = "Start Game";
-
-
 
 // --- Change Paddle Color ---
 document.getElementById("colorBtn").addEventListener("click", function () {
@@ -279,18 +238,18 @@ document.getElementById("colorBtn").addEventListener("click", function () {
     }
     player.color = randomColor();
     canvas.style.borderColor = player.color;
-    render(); // draw change immediately
+    render();
 });
 
-// ✅ --- Change Ball Color ---
+// --- Change Ball Color ---
 document.getElementById("ballColorBtn").addEventListener("click", function () {
     function randomColor() {
         return "#" + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0');
     }
     ball.color = randomColor();
-    render(); // draw change immediately
+    render();
 });
 
-// ✅ Show paddles/ball even before starting
+// Show paddles/ball before starting
 resetBall();
 render();
