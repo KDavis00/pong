@@ -212,7 +212,7 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-// --- Start/Pause Toggle ---
+// --- /Pause Toggle ---
 
 let running = false;
 let animationFrameId = null;
@@ -225,21 +225,28 @@ function gameLoop() {
     animationFrameId = requestAnimationFrame(gameLoop);
 }
 
-document.getElementById("startBtn").addEventListener("click", function () {
-    running = !running;
-    this.textContent = running ? "Pause Game" : "Resume Game";
+const startBtn = document.getElementById("startBtn");
 
-    if (running) {
-        // Only start loop if it's not already running
+// Set initial button text
+startBtn.textContent = "Start Game";
+
+startBtn.addEventListener("click", function () {
+    if (!running) {
+        // Starting or resuming the game
+        running = true;
         if (!animationFrameId) {
             gameLoop();
         }
+        this.textContent = "Pause Game";
     } else {
-        // Stop the animation frame when paused
+        // Pausing the game
+        running = false;
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
+        this.textContent = "Resume Game";
     }
 });
+
 
 
 // --- Change Paddle Color ---
