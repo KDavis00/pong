@@ -239,7 +239,9 @@ document.getElementById("startBtn").addEventListener("click", function () {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
     }
+    
 });
+document.getElementById("startBtn").textContent = "Start Game";
 
 
 
